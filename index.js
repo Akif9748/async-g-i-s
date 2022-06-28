@@ -13,7 +13,7 @@ const imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg'];
  * @param {String} searchTerm Search term for search
  * @param {String} queryStringAddition You can add custom query
  * @param {[String]} filterOutDomains Not looking for these domains
- * @returns {Promise<[Result]>} Array of results
+ * @returns {Promise<[Object]>} Array of results
  */
 async function gis(searchTerm, queryStringAddition = "", filterOutDomains = ['gstatic.com']) {
 
@@ -21,9 +21,7 @@ async function gis(searchTerm, queryStringAddition = "", filterOutDomains = ['gs
 
   try {
 
-    const url = `${baseURL}?tbm=isch&q=${searchTerm}${queryStringAddition}`
-
-    const body = await fetch(url, {
+    const body = await fetch(`${baseURL}?tbm=isch&q=${searchTerm}${queryStringAddition}`, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
       }
@@ -52,17 +50,21 @@ async function gis(searchTerm, queryStringAddition = "", filterOutDomains = ['gs
 
       let result;
 
-      while ((result = regex.exec(content)) !== null) {
+      while ((result = regex.exec(content)) !== null) 
 
         if (result.length > 3) {
 
-          const ref = new Result(result[1], +result[2], +result[3]);
+          const ref = {
+            url: result[1],
+            height: +result[2],
+            width: +result[3]
+          }
 
-          if (filterOutDomains.every(skipDomain => ref.url.indexOf(skipDomain) === -1))
+          if (filterOutDomains.every(skipDomain => !ref.url.includes(skipDomain)))
             results.push(ref);
 
         }
-      }
+      
       return results;
 
     }));
@@ -71,35 +73,5 @@ async function gis(searchTerm, queryStringAddition = "", filterOutDomains = ['gs
   }
 
 }
-
-
-/**
- * Image search result class
- */
-class Result {
-  /**
-   * Image search result
-   * @param {String} url Image URL
-   * @param {Number} height 
-   * @param {Number} width 
-   */
-  constructor(url, height, width) {
-    /**
-     * Image URL
-     */
-    this.url = url;
-
-    /**
-     * Image height
-     */
-    this.height = height;
-
-    /**
-     * Image width
-     */
-    this.width = width;
-  }
-}
-
 
 module.exports = gis;

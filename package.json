@@ -4,13 +4,18 @@
   "description": "Async Google Image Search",
   "main": "index.js",
   "scripts": {
-    "test": "node ./tests/test"
+    "test": "node test"
   },
+  "types": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Akif9748/async-g-i-s.git"
   },
-  "keywords": [],
+  "keywords": [
+    "google",
+    "image",
+    "search"
+  ],
   "author": "Akif9748",
   "license": "MIT",
   "bugs": {
