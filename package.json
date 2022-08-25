@@ -23,8 +23,7 @@
   },
   "homepage": "https://github.com/Akif9748/async-g-i-s",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.3",
-    "lodash.flatten": "^4.4.0",
+    "cheerio": "^1.0.0-rc.12",
     "node-fetch": "^2.6.7"
   }
 }
