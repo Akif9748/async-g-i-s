@@ -38,9 +38,9 @@ module.exports = async function gis(searchTerm, options = {}) {
     }
   }).then(res => res.text());
 
-  const content = parse(body).getElementsByTagName('script').find(
+  const content = parse(body).getElementsByTagName('script').filter(
     script => script.childNodes?.length && IMAGE_EXTENSIONS.some(a => script.childNodes[0].text.toLowerCase().includes(a))
-  );
+  )
 
   const results = [];
 
@@ -53,7 +53,7 @@ module.exports = async function gis(searchTerm, options = {}) {
         height: +result[2],
         width: +result[3]
       });
-      
+
   return results;
 
 }
