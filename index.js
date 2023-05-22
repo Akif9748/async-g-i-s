@@ -21,7 +21,7 @@ module.exports = async function gis(searchTerm, query = {}, filterOutDomains = [
 
     const body = await fetch(`http://images.google.com/search?${new URLSearchParams({ ...query, tbm: "isch", q: searchTerm })}`, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36'
       }
     }).then(res => res.text());
 
