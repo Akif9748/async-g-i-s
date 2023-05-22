@@ -22,10 +22,10 @@
     "url": "https://github.com/Akif9748/async-g-i-s/issues"
   },
   "homepage": "https://github.com/Akif9748/async-g-i-s",
-  "dependencies": {
-    "cheerio": "^1.0.0-rc.12"
-  },
   "devDependencies": {
     "node-fetch": "^2.6.7"
+  },
+  "dependencies": {
+    "node-html-parser": "^6.1.5"
   }
 }

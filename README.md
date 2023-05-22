@@ -1,6 +1,6 @@
 # async-g-i-s
 
-Async altarnative for g-i-s
+Async and new alternative for the [g-i-s](https://www.npmjs.com/package/g-i-s).
 
 ## Installation
 
@@ -21,7 +21,7 @@ const gis = require('async-g-i-s');
   }
 })();
 ```
-## .then() Usage
+## Promise Usage
 ```js
 const gis = require('async-g-i-s');
 
@@ -85,16 +85,11 @@ Output:
 ]
 ```
 
-You can add extra queries to URL:
+You can add extra queries to URL, or you can also filter out results from specfied:
 ```js
-  gis("akif",{safe:"on"});
-
+gis("akif", {
+  query: { safe: "on" },
+  filterOutDomains: [ 'm.media-amazon.com' ]
+});
 ```
-Example, this will not fetch NSFW results. 
-
-You can also filter out results from specfied.
-```js
-  gis("akif", {}, [ 'm.media-amazon.com' ]);
-
-```
- 
+Example, this will not fetch NSFW results. Also, it will filter out results from amazon.

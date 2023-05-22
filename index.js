@@ -1,66 +1,59 @@
-const cheerio = require('cheerio');
+const { parse } = require('node-html-parser');
 const fetch = global.fetch || require('node-fetch');
 
-const imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg'];
-
+const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.svg'];
+const REGEX = /\["(http.+?)",(\d+),(\d+)\]/g;
 
 /**
  * 
  * Async version of g-i-s module
  * @async
  * @param {String} searchTerm Search term for search
- * @param {Object} query You can use custom query
- * @param {[String]} filterOutDomains Not looking for these domains
- * @param {Boolean} disableDoubleHTTP Disable double http in url, slow, and safe
- * @returns {Promise<[Object]>} Array of results
+ * @param {Object} options Options for search
+ * @param {Object} options.query You can use custom query
+ * @param {[String]} options.filterOutDomains Not looking for these domains
+ * @param {String} options.userAgent User agent for request
+ * @param {Boolean} options.disableDoubleHTTP Disable double http in url, slow, and safe
+ * @returns {Promise<[{url: string, height: number, width: number }]>} Array of results
  */
-module.exports = async function gis(searchTerm, query = {}, filterOutDomains = ['gstatic.com'], disableDoubleHTTP = true) {
 
-  if (!searchTerm) throw new TypeError("searchTerm is missing.");
-  try {
+module.exports = async function gis(searchTerm, options = {}) {
+  if (!searchTerm || typeof searchTerm !== 'string')
+    throw new TypeError("searchTerm must be a string.");
 
-    const body = await fetch(`http://images.google.com/search?${new URLSearchParams({ ...query, tbm: "isch", q: searchTerm })}`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36'
-      }
-    }).then(res => res.text());
+  if (typeof options !== 'object')
+    throw new TypeError("options argument must be an object.");
 
-    const scripts = cheerio.load(body)('script');
-    const scriptContents = [];
-
-    for (const script of scripts)
-      if (script.children?.length) {
-
-        const content = script.children[0].data;
-
-        if (imageFileExtensions.some(a => content.toLowerCase().includes(a)))
-          scriptContents.push(content);
+  const {
+    query = {},
+    filterOutDomains = ['gstatic.com'],
+    userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+    disableDoubleHTTP = true
+  } = options;
 
 
-      }
+  const body = await fetch(`http://www.google.com/search?${new URLSearchParams({ ...query, tbm: "isch", q: searchTerm })}`, {
+    headers: {
+      'User-Agent': userAgent
+    }
+  }).then(res => res.text());
 
-    return scriptContents.map(content => {
+  const content = parse(body).getElementsByTagName('script').find(
+    script => script.childNodes?.length && IMAGE_EXTENSIONS.some(a => script.childNodes[0].text.toLowerCase().includes(a))
+  );
 
-      const results = [];
-      const regex = /\["(http.+?)",(\d+),(\d+)\]/g;
+  const results = [];
 
-      let result;
+  let result;
 
-      while ((result = regex.exec(content)) !== null)
-        if (result.length > 3 && filterOutDomains.every(skipDomain => !result[1].includes(skipDomain)))
-          results.push({
-            url: disableDoubleHTTP ? `http${result[1].split("http")[1]}` : result[1],
-            height: +result[2],
-            width: +result[3]
-          });
-
-      return results;
-
-    }).flat();
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
+  while ((result = REGEX.exec(content)) !== null)
+    if (result.length > 3 && filterOutDomains.every(skipDomain => !result[1].includes(skipDomain)))
+      results.push({
+        url: disableDoubleHTTP ? `http${result[1].split("http")[1]}` : result[1],
+        height: +result[2],
+        width: +result[3]
+      });
+      
+  return results;
 
 }
-
