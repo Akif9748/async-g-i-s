@@ -23,9 +23,6 @@
   },
   "homepage": "https://github.com/Akif9748/async-g-i-s",
   "devDependencies": {
-    "node-fetch": "^2.6.7"
-  },
-  "dependencies": {
-    "node-html-parser": "^6.1.5"
+    "node-fetch": "^2.6.12"
   }
 }
