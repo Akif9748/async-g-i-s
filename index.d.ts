@@ -6,9 +6,9 @@ interface Result {
 }
 
 interface Options {
-    query?: object = {};
-    userAgent?: string = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36';
-    newRegex?: boolean = true;
+    query?: object;
+    userAgent?: string;
+    newRegex?: boolean;
 }
 
 /**
@@ -22,4 +22,4 @@ interface Options {
  * @param {Boolean} options.newRegex Better filtering, if you want to find everything, set as false
  * @returns {Promise<Result[]>} Array of results
  */
-export default async function gis(searchTerm: string, options?: Options): Promise<Result[]>;
+export default function gis(searchTerm: string, options?: Options): Promise<Result[]>;
