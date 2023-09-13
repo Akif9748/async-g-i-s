@@ -22,7 +22,7 @@
     "url": "https://github.com/Akif9748/async-g-i-s/issues"
   },
   "homepage": "https://github.com/Akif9748/async-g-i-s",
-  "devDependencies": {
-    "node-fetch": "^2.6.12"
+  "peerDependencies": {
+    "node-fetch": "^2.7.0"
   }
 }

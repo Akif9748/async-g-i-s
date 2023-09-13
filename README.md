@@ -3,10 +3,14 @@
 Async and new alternative for the [g-i-s](https://www.npmjs.com/package/g-i-s).
 
 ## Installation
+[![NPM](https://nodei.co/npm/async-g-i-s.png?mini=true)](https://npmjs.org/package/async-g-i-s)
 
-`npm i async-g-i-s`
+## Note for old Node.js versions (below 16):
+This package works with `fetch` api, if you use it on older versions of Node.js, you need to install `node-fetch` package defined in package.json.
 
-## Async/await Usage
+## Usage
+
+### Async/await Usage
 ```js
 const gis = require('async-g-i-s');
 
@@ -21,7 +25,7 @@ const gis = require('async-g-i-s');
   }
 })();
 ```
-## Promise Usage
+### Promise Usage
 ```js
 const gis = require('async-g-i-s');
 
@@ -29,7 +33,7 @@ gis("akif").then(console.log).catch(console.error);
 ```
 
 
-Output:
+### Output:
 ```js
 [
   {
@@ -82,8 +86,18 @@ Output:
   }
 ]
 ```
+## Default Options 
+```js
+gis("akif", {
+  query: {},
+  userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
+  newRegex: true
+});
+```
+- **New regex**: it is more stable, **and turns with colors** (that means the colors wont come with old regex). But it is slower than old regex.
+- **User agent**: it is default user agent of Chrome. You can change it to anything you want.
+- **Query**: You can add additional queries to URL. For example, you can add `safe: "on"` to filter out NSFW results.
 
-You can add extra queries to URL, or you can also filter out results from specfied:
 ```js
 gis("akif", {
   query: { safe: "on" },

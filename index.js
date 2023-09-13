@@ -19,7 +19,7 @@ module.exports = async function gis(searchTerm, options = {}) {
 
   const {
     query = {},
-    userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+    userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
     newRegex = true
   } = options,
     body = await fetch(`http://www.google.com/search?${new URLSearchParams({ ...query, tbm: "isch", q: searchTerm })}`, { headers: { 'User-Agent': userAgent } }).then(res => res.text()),
