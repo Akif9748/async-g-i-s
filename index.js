@@ -2,6 +2,13 @@ const fetch = global.fetch || require("node-fetch");
 const REGEX = /\["(\bhttps?:\/\/[^"]+)",(\d+),(\d+)\],null/g;
 
 /**
+ * @param {string} content
+ * @returns {string}
+ */
+const unicodeToString = (content) =>
+  content.replace(/\\u[\dA-F]{4}/gi, (match) => String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16)))
+
+/**
  * 
  * Async version of g-i-s module
  * @async
@@ -27,7 +34,7 @@ module.exports = async function gis(searchTerm, options = {}) {
 
   while (result = REGEX.exec(content))
     results.push({
-      url: result[1],
+      url: unicodeToString(result[1]),
       height: +result[2],
       width: +result[3]
     });
