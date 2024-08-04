@@ -5,8 +5,8 @@ const REGEX = /\["(\bhttps?:\/\/[^"]+)",(\d+),(\d+)\],null/g;
  * @param {string} content
  * @returns {string}
  */
-const unicodeToString = (content) =>
-  content.replace(/\\u[\dA-F]{4}/gi, (match) => String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16)))
+const unicodeToString = content =>
+  content.replace(/\\u[\dA-F]{4}/gi, match => String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16)));
 
 /**
  * 
