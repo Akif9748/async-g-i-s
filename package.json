@@ -1,6 +1,6 @@
 {
   "name": "async-g-i-s",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "description": "Async Google Image Search",
   "main": "index.js",
   "scripts": {
